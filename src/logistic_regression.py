@@ -156,6 +156,11 @@ class SoftmaxRegression(BaseClassifier):
             d. Update W using gradient ascent with learning rate.
             e. Optionally compute and store loss for monitoring.
         """
+        # Determine number of classes
+        if self.n_classes is None:
+            self.classes_ = np.unique(y)
+            self.n_classes = len(self.classes_)
+
         # Add bias term to input features
         X_bias = self._add_bias(X)
 
