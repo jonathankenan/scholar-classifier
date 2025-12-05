@@ -1,9 +1,9 @@
 import numpy as np
 from cvxopt import matrix, solvers
 import numpy as np
-from core.base_model import BaseClassifier
+from src.core.base_model import BaseClassifier
 
-class SVM_RBF_QP(BaseClassifier):
+class SVM_QP(BaseClassifier):
     def __init__(self, C=1.0, gamma=0.1, kernel='rbf'):
         self.C = C
         self.gamma = gamma
@@ -29,6 +29,14 @@ class SVM_RBF_QP(BaseClassifier):
         return K
 
     def fit(self, X, y):
+
+        # Konversi ke numpy array jika dia DataFrame
+        if hasattr(X, 'values'):
+            X = X.values 
+        
+        if hasattr(y, 'values'):
+            y = y.values
+
         n_samples, n_features = X.shape
         y = y.astype(float).reshape(-1, 1) 
         
@@ -137,7 +145,7 @@ class DAGSVM(BaseClassifier):
                 y_ij = np.where(y_ij == class_i, 1, -1)
                 
                 # Latih SVM
-                svm_ij = SVM_RBF_QP(C=self.C, gamma=self.gamma, kernel=self.kernel)
+                svm_ij = SVM_QP(C=self.C, gamma=self.gamma, kernel=self.kernel)
                 svm_ij.fit(X_ij, y_ij)
                 
                 # Simpan classifier
