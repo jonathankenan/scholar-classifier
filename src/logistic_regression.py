@@ -133,8 +133,11 @@ class SoftmaxRegression(BaseClassifier):
         """
         # Determine number of classes
         if self.n_classes is None:
-            self.classes_ = np.unique(y)
-            self.n_classes = len(self.classes_)
+            if y.ndim == 2:
+                self.n_classes = y.shape[1]
+            else:
+                self.classes_ = np.unique(y)
+                self.n_classes = len(self.classes_)
 
         # Add bias term to input features
         X_bias = self._add_bias(X)
