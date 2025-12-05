@@ -20,6 +20,11 @@ class SoftmaxRegression(BaseClassifier):
         self.n_classes = n_classes
         self.verbose = verbose
         self.random_state = random_state
+        # Create a per-instance random generator (deterministic when random_state is an int)
+        try:
+            self.rng = np.random.default_rng(self.random_state)
+        except Exception:
+            self.rng = np.random.default_rng(42)
 
         # Learned during training
         self.weights = None  # shape (n_features, n_features_with_bias)
@@ -144,10 +149,9 @@ class SoftmaxRegression(BaseClassifier):
         X_bias = self._add_bias(X)
 
         # Initialize weights with reproducible randomness
-        rng = np.random.default_rng(self.random_state)
         if random_weights:
-            # Random small weights
-            self.weights = rng.standard_normal((self.n_classes, X_bias.shape[1])) * 0.01
+            # Random small weights seeded by self.rng
+            self.weights = self.rng.standard_normal((self.n_classes, X_bias.shape[1])) * 0.01
         else:
             # Zero initialization
             self.weights = np.zeros((self.n_classes, X_bias.shape[1]))
