@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 from collections import Counter
-from core.base_model import BaseClassifier
+from src.core.base_model import BaseClassifier
 
 # Node class untuk pohon keputusan
 class Node:

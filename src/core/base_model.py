@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from utils.metrics import f1_macro
+from src.utils.metrics import f1_macro
 import os   
 import pickle
 
